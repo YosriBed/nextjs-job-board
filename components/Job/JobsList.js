@@ -13,12 +13,11 @@ const ALL_JOBS_QUERY = gql`
         slug
         name
       }
-      postedAt
       cities {
+        id
         name
         country {
           name
-          isoCode
         }
       }
       tags {
@@ -36,7 +35,6 @@ const JobsList = () => {
   if (loading) return <Loading />;
 
   const { jobs } = data;
-
   return (
     <div className='-my-8 divide-y-2 divide-gray-800'>
       {jobs.map((job) => (
@@ -48,20 +46,24 @@ const JobsList = () => {
             <span className='font-semibold title-font text-white'>
               {job.company.name}
             </span>
-            <span className='mt-1 text-gray-500 text-sm'>{job.postedAt}</span>
+            <span className='mt-1 text-gray-500 text-sm'>
+              {job.cities.map((city) => (
+                <div key={city.id}>{`${city.name}, ${city.country.name}`}</div>
+              ))}
+            </span>
           </div>
           <div className='md:flex-grow'>
             <h2 className='text-2xl font-medium text-white title-font mb-2'>
               {job.title}
             </h2>
             <p className='leading-relaxed'>
-              {job.tags.map((tag) => (
-                <span key={tag.id}>{tag.name}, </span>
-              ))}
+              {job.tags
+                .map((tag) => tag.name)
+                .reduce((a, b) => `${a ? `${a}, ` : ""} ${b}`, "")}
             </p>
             <Link
               href={`/${job.company.slug}/${job.slug}`}
-              className='text-green-400 inline-flex items-center mt-4'
+              className='text-green-900 inline-flex items-center mt-4'
             >
               Learn More
             </Link>
