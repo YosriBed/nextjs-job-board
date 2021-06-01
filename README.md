@@ -19,3 +19,10 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+# Features
+
+| Page | Uri | Type |
+|--- |---  |--- |
+| Job Board | / | SSR |
+| Job Details | /:companySlug/:jobSlug | Incremental SR   |
